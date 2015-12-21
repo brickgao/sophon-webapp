@@ -1,9 +1,7 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { browserHistory, Router, Route, Link } from 'react-router'
-import { AppCanvas, AppBar, Avatar, FlatButton, LeftNav, List, ListItem, Mixins, Styles } from 'material-ui'
-
-const {Colors} = Styles
+import { AppCanvas, AppBar, Avatar, FlatButton, LeftNav, List, ListItem } from 'material-ui'
 
 
 class Master extends React.Component {
