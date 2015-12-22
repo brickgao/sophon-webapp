@@ -63,7 +63,7 @@ class Master extends React.Component {
                 open={this.state.leftNavOpen}
                 onRequestChange={this.handleLeftNavClose}>
                 <List>
-                    <ListItem value="server" primaryText="Server" onTouchTap={this.handleLeftNavClose}/>
+                    <ListItem href="/#/server" value="server" primaryText="Server" onTouchTap={this.handleLeftNavClose}/>
                     <ListItem value="ssh-permission" primaryText="SSH Permission" onTouchTap={this.handleLeftNavClose}/>
                     <ListItem value="deploy" primaryText="Deploy" onTouchTap={this.handleLeftNavClose}/>
                     <ListItem value="docker" primaryText="Docker" onTouchTap={this.handleLeftNavClose}/>
