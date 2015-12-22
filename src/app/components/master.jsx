@@ -1,7 +1,16 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { browserHistory, Router, Route, Link } from 'react-router'
-import { AppCanvas, AppBar, Avatar, FlatButton, LeftNav, List, ListItem } from 'material-ui'
+import {
+    AppCanvas,
+    AppBar,
+    Avatar,
+    Divider,
+    FlatButton,
+    LeftNav,
+    List,
+    ListItem,
+} from 'material-ui'
 
 
 class Master extends React.Component {
@@ -39,9 +48,15 @@ class Master extends React.Component {
     }
 
     _getAppBar() {
+        let routes2subtitle = {
+            '/': '',
+            '/server': ' - Server Status',
+        }
+        let title = 'Sophon' + routes2subtitle[this.props.location.pathname]
+
         return (
             <div>
-                <AppBar title="Sophon"
+                <AppBar title={title}
                  iconElementRight={this._getUserStatus()} 
                  style={{position: 'absolute', top: 0}}
                  onLeftIconButtonTouchTap={this.handleLeftNavToggle} />
@@ -63,7 +78,9 @@ class Master extends React.Component {
                 open={this.state.leftNavOpen}
                 onRequestChange={this.handleLeftNavClose}>
                 <List>
-                    <ListItem value="server" primaryText="Server" onTouchTap={this.handleLeftNavClose}/>
+                    <ListItem href="/#/" value="index" primaryText="Sophon" onTouchTap={this.handleLeftNavClose}/>
+                    <Divider inset={false} />
+                    <ListItem href="/#/server" value="server" primaryText="Server" onTouchTap={this.handleLeftNavClose}/>
                     <ListItem value="ssh-permission" primaryText="SSH Permission" onTouchTap={this.handleLeftNavClose}/>
                     <ListItem value="deploy" primaryText="Deploy" onTouchTap={this.handleLeftNavClose}/>
                     <ListItem value="docker" primaryText="Docker" onTouchTap={this.handleLeftNavClose}/>
