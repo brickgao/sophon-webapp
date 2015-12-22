@@ -18,15 +18,24 @@ class Master extends React.Component {
     }
 
     render() {
-        return (
-            <AppCanvas>
-                {this._getAppBar()}
-                <div style={{position: 'absolute', top: 80, left: 40, right: 40, bottom: 20}}>
+        if (this.props.location.pathname === '/login') {
+            return (
+                <AppCanvas>
                     {this.props.children}
-                </div>
-                {this._getLeftNav()}
-            </AppCanvas>
-        )
+                </AppCanvas>
+            )
+        }
+        else {
+            return (
+                <AppCanvas>
+                    {this._getAppBar()}
+                    <div style={{position: 'absolute', top: 80, left: 40, right: 40, bottom: 20}}>
+                        {this.props.children}
+                    </div>
+                    {this._getLeftNav()}
+                </AppCanvas>
+            )
+        }
     }
 
     _getAppBar() {
