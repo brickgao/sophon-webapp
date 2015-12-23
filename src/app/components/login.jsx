@@ -35,15 +35,13 @@ class Login extends React.Component {
             })
         }
         finally {
-            try {
-                if (!username.trim()) {
-                    this.setState({usernameErrorText: "Please input username"})
-                }
-                if (!password.trim()) {
-                    this.setState({passwordErrorText: "Please input password"})
-                }
+            if (!username.trim()) {
+                this.setState({usernameErrorText: "Please input username"})
             }
-            finally {
+            else if (!password.trim()) {
+                this.setState({passwordErrorText: "Please input password"})
+            }
+            else {
                 $.post(
                     "/api/user/login",
                     {username: username, password: password},
