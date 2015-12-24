@@ -2,17 +2,14 @@ import React from 'react'
 import { render } from 'react-dom'
 import { Router, Route, Link } from 'react-router'
 
-
-class ServerStatus extends React.Component {
-
+class ServerStatusDetail extends React.Component {
     render() {
-        return(
+        return (
             <div>
-                {this.props.children}
+            <h2>Fill in Server Status Detail</h2>
             </div>
         )
     }
-
 }
 
-export default ServerStatus
+export default ServerStatusDetail
