@@ -49,10 +49,12 @@ class Master extends React.Component {
 
     _getAppBar() {
         let routes2subtitle = {
-            '/': '',
-            '/server': ' - Server Status',
+            '//': '',
+            '/server/': ' - Server Status',
         }
-        let title = 'Sophon' + routes2subtitle[this.props.location.pathname]
+        let titleArray = this.props.location.pathname.split('/')
+        let titleCut = [titleArray[0], titleArray[1], ""].join('/')
+        let title = 'Sophon' + routes2subtitle[titleCut]
 
         return (
             <div>
