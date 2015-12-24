@@ -4,7 +4,6 @@ import { Router, Route, Link } from 'react-router'
 
 
 class ServerStatus extends React.Component {
-
     render() {
         return(
             <div>
@@ -12,7 +11,6 @@ class ServerStatus extends React.Component {
             </div>
         )
     }
-
 }
 
 export default ServerStatus
