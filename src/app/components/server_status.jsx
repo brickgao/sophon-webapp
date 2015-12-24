@@ -18,6 +18,17 @@ const { Colors } = Styles
 
 
 class ServerStatus extends React.Component {
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            serverStatus: "",
+            isMount: false,
+        }
+        this._getServerStatus = this._getServerStatus.bind(this)
+    }
+
+
     render() {
         return(
             <Table
@@ -56,51 +67,51 @@ class ServerStatus extends React.Component {
     }
 
     _getTableBody() {
+        if (!this.state.isMount) {
+            $.get(
+                "/api/host/status",
+                this._getServerStatus
+            )
+        }
+
+        let tableBody = []
+        let statusIconDict = {
+            "Active": <TableRowColumn><FontIcon className="material-icons" color={Colors.greenA400}>done</FontIcon></TableRowColumn>,
+            "Down": <TableRowColumn><FontIcon className="material-icons" color={Colors.red400}>error</FontIcon></TableRowColumn>,
+        }
+        let detailBtnDict = {
+            "Active": <TableRowColumn><RaisedButton label="Detail" secondary={true} /></TableRowColumn>,
+            "Down":  <TableRowColumn><RaisedButton label="Disable" disabled={true} /></TableRowColumn>,
+        }
+
+        if (this.state.isMount) {
+            for (let key of Object.keys(this.state.serverStatus)) {
+                let val = this.state.serverStatus[key]
+                tableBody.push(
+                    <TableRow key={key}>
+                        <TableRowColumn>{key}</TableRowColumn>
+                        {statusIconDict[val["Status"]]}
+                        <TableRowColumn>{val["Hostname"]}</TableRowColumn>
+                        <TableRowColumn>{val["IP"]}</TableRowColumn>
+                        <TableRowColumn>{val["CPU Load"]}</TableRowColumn>
+                        <TableRowColumn>{val["Memory Usage"][0]} / {val["Memory Usage"][1]} MB</TableRowColumn>
+                        <TableRowColumn>{val["Disk Usage"][0]} / {val["Disk Usage"][1]} GB</TableRowColumn>
+                        {detailBtnDict[val["Status"]]}
+                    </TableRow>
+                )
+            }
+        }
+
         return (
             <TableBody
              displayRowCheckbox={false}>
-                <TableRow>
-                    <TableRowColumn>1</TableRowColumn>
-                    <TableRowColumn><FontIcon className="material-icons" color={Colors.greenA400}>done</FontIcon></TableRowColumn>
-                    <TableRowColumn>Marvin</TableRowColumn>
-                    <TableRowColumn>123.456.78.1</TableRowColumn>
-                    <TableRowColumn>0.2</TableRowColumn>
-                    <TableRowColumn>2000 / 8030 MB</TableRowColumn>
-                    <TableRowColumn>20 / 80 GB</TableRowColumn>
-                    <TableRowColumn><RaisedButton label="Detail" secondary={true} /></TableRowColumn>
-                </TableRow>
-                <TableRow>
-                    <TableRowColumn>2</TableRowColumn>
-                    <TableRowColumn><FontIcon className="material-icons" color={Colors.greenA400}>done</FontIcon></TableRowColumn>
-                    <TableRowColumn>Orion</TableRowColumn>
-                    <TableRowColumn>123.456.78.2</TableRowColumn>
-                    <TableRowColumn>0.1</TableRowColumn>
-                    <TableRowColumn>3000 / 8030 MB</TableRowColumn>
-                    <TableRowColumn>15 / 80 GB</TableRowColumn>
-                    <TableRowColumn><RaisedButton label="Detail" secondary={true} /></TableRowColumn>
-                </TableRow>
-                 <TableRow>
-                    <TableRowColumn>3</TableRowColumn>
-                    <TableRowColumn><FontIcon className="material-icons" color={Colors.red400}>error</FontIcon></TableRowColumn>
-                    <TableRowColumn>Alice</TableRowColumn>
-                    <TableRowColumn>123.456.78.4</TableRowColumn>
-                    <TableRowColumn>0</TableRowColumn>
-                    <TableRowColumn>0 / 0 MB</TableRowColumn>
-                    <TableRowColumn>0 / 0 GB</TableRowColumn>
-                    <TableRowColumn><RaisedButton label="Disable" disabled={true} /></TableRowColumn>
-                </TableRow>
-                <TableRow>
-                    <TableRowColumn>4</TableRowColumn>
-                    <TableRowColumn><FontIcon className="material-icons" color={Colors.greenA400}>done</FontIcon></TableRowColumn>
-                    <TableRowColumn>Bob</TableRowColumn>
-                    <TableRowColumn>123.456.78.5</TableRowColumn>
-                    <TableRowColumn>0.8</TableRowColumn>
-                    <TableRowColumn>7000 / 8030 MB</TableRowColumn>
-                    <TableRowColumn>40 / 80 GB</TableRowColumn>
-                    <TableRowColumn><RaisedButton label="Detail" secondary={true} /></TableRowColumn>
-                </TableRow>
+             {tableBody}
             </TableBody>
         )
+    }
+
+    _getServerStatus(data) {
+        this.setState({serverStatus: data, isMount: true})
     }
 
 }
