@@ -68,7 +68,10 @@ class Master extends React.Component {
 
     _getUserStatus() {
         return (
-            <FlatButton label="Logout" />
+            <FlatButton label="Logout" 
+             onTouchTap = {$.get("/api/user/logout"), function() {
+                window.location = "/#/login";
+             }} />
         )
     }
 
