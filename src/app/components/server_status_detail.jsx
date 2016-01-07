@@ -17,7 +17,50 @@ const { Colors } = Styles
 
 
 class ServerStatusDetail extends React.Component {
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            id: parseInt(this.props.params.id),
+            hostname: "",
+            ip: "",
+            cpuLoad: 0.0,
+            memoryUsage: [0, 0],
+            diskUsage: [0, 0],
+            detailServerStatus: "",
+            isMount1: false,
+            isMount2: false,
+        }
+        this._getAllServerStatus = this._getAllServerStatus.bind(this)
+        this._getDetailServerStatus = this._getDetailServerStatus.bind(this)
+    }
+
+    _getAllServerStatus(allServerStatus) {
+        this.setState({
+            hostname: allServerStatus[this.state.id]["Hostname"],
+            ip: allServerStatus[this.state.id]["IP"],
+            cpuLoad: allServerStatus[this.state.id]["CPU Load"],
+            memoryUsage: allServerStatus[this.state.id]["Memory Usage"],
+            diskUsage: allServerStatus[this.state.id]["Disk Usage"],
+            isMount1: true,
+        })
+    }
+
+    _getDetailServerStatus(detailServerStatus) {
+        this.setState({
+            detailServerStatus: detailServerStatus,
+            isMount2: true,
+        })
+    }
+
     render() {
+        if (!this.state.isMount1) {
+            $.get(
+                "/api/host/status",
+                this._getAllServerStatus
+            )
+        }
+
         return (
             <div>
                 {this._getHeader()}
@@ -29,7 +72,7 @@ class ServerStatusDetail extends React.Component {
 
     _getHeader() {
         return (
-            <h2>Orion - 192.168.1.12</h2>
+            <h2>{this.state.hostname} - {this.state.ip}</h2>
         )
     }
 
@@ -37,19 +80,38 @@ class ServerStatusDetail extends React.Component {
         let styles = {
             marginTop: "30px",
         }
+        let cpuLoadProcessColor = Colors.lightBlue400
+        let memoryUsageProcessColor = Colors.lightBlue400
+        let diskUsageProcessColor = Colors.lightBlue400
+        let memoryUsageProcess = this.state.memoryUsage[0] / this.state.memoryUsage[1]
+        let diskUsageProcess = this.state.diskUsage[0] / this.state.diskUsage[1]
+
+        if (this.state.cpuLoad > 0.8) {
+            cpuLoadProcessColor = Colors.red500
+        }
+        if (memoryUsageProcess > 0.8) {
+            memoryUsageProcessColor = Colors.red500
+        }
+        if (diskUsageProcess > 0.8) {
+            diskUsageProcessColor = Colors.red500
+        }
+        
         return (
             <div>
                 <div style={styles}>
-                    <span>Cpu Loads: 0.3</span>
-                    <LinearProgress mode="determinate" value={30} />
+                    <span>Cpu Loads: {this.state.cpuLoad}</span>
+                    <LinearProgress mode="determinate" color={cpuLoadProcessColor}
+                                    value={this.state.cpuLoad * 100} />
                 </div>
                 <div style={styles}>
-                    <span>Memory Usage: 2000 / 4000 MB</span>
-                    <LinearProgress mode="determinate" value={50} />
+                    <span>Memory Usage: {this.state.memoryUsage[0]} / {this.state.memoryUsage[1]} MB</span>
+                    <LinearProgress mode="determinate" color={memoryUsageProcessColor}
+                                    value={memoryUsageProcess * 100} />
                 </div>
                 <div style={styles}>
-                    <span>Disk Usage: 35 / 40 GB</span>
-                    <LinearProgress mode="determinate" color={Colors.red500} value={87} />
+                    <span>Disk Usage: {this.state.diskUsage[0]} / {this.state.diskUsage[1]} GB</span>
+                    <LinearProgress mode="determinate" color={diskUsageProcessColor}
+                                    value={diskUsageProcess * 100} />
                 </div>
             </div>
         )
