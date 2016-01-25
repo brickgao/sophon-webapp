@@ -107,7 +107,7 @@ class ServerStatusIndex extends React.Component {
         return (
             <TableBody
              displayRowCheckbox={false}>
-             {tableBody}
+                {tableBody}
             </TableBody>
         )
     }
