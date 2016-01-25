@@ -28,11 +28,12 @@ class ServerStatusDetail extends React.Component {
             memoryUsage: [0, 0],
             diskUsage: [0, 0],
             detailServerStatus: "",
+            severProcessStatus: "",
             isMount1: false,
             isMount2: false,
         }
         this._getAllServerStatus = this._getAllServerStatus.bind(this)
-        this._getDetailServerStatus = this._getDetailServerStatus.bind(this)
+        this._getServerProcessStatus = this._getServerProcessStatus.bind(this)
     }
 
     _getAllServerStatus(allServerStatus) {
@@ -46,9 +47,9 @@ class ServerStatusDetail extends React.Component {
         })
     }
 
-    _getDetailServerStatus(detailServerStatus) {
+    _getServerProcessStatus(severProcessStatus) {
         this.setState({
-            detailServerStatus: detailServerStatus,
+            severProcessStatus: severProcessStatus,
             isMount2: true,
         })
     }
@@ -58,6 +59,12 @@ class ServerStatusDetail extends React.Component {
             $.get(
                 "/api/host/status",
                 this._getAllServerStatus
+            )
+        }
+        if (!this.state.isMount2) {
+            $.get(
+                "/api/host/" + this.props.params.id + "/process_status",
+                this._getServerProcessStatus
             )
         }
 
@@ -153,33 +160,28 @@ class ServerStatusDetail extends React.Component {
     }
 
     _getProcessStatusBody() {
+
+        let processStatusBody = []
+
+        if (this.state.isMount2) {
+            for (let singleProcessStatus of JSON.parse(this.state.severProcessStatus)) {
+                processStatusBody.push(
+                    <TableRow key={singleProcessStatus["PID"]}>
+                        <TableRowColumn>{singleProcessStatus["PID"]}</TableRowColumn>
+                        <TableRowColumn>{singleProcessStatus["User"]}</TableRowColumn>
+                        <TableRowColumn>{singleProcessStatus["Memory Usage"] * 100}</TableRowColumn>
+                        <TableRowColumn>{singleProcessStatus["CPU Usage"] * 100}</TableRowColumn>
+                        <TableRowColumn>{singleProcessStatus["Time"]}</TableRowColumn>
+                        <TableRowColumn>{singleProcessStatus["Command"]}</TableRowColumn>
+                    </TableRow>
+                )
+            }
+        }
+        
         return (
             <TableBody
              displayRowCheckbox={false}>
-                <TableRow>
-                    <TableRowColumn>11</TableRowColumn>
-                    <TableRowColumn>root</TableRowColumn>
-                    <TableRowColumn>1</TableRowColumn>
-                    <TableRowColumn>1</TableRowColumn>
-                    <TableRowColumn>11:11:11</TableRowColumn>
-                    <TableRowColumn>/bin/placeholder</TableRowColumn>
-                </TableRow>
-                <TableRow>
-                    <TableRowColumn>12</TableRowColumn>
-                    <TableRowColumn>notroot</TableRowColumn>
-                    <TableRowColumn>2</TableRowColumn>
-                    <TableRowColumn>3</TableRowColumn>
-                    <TableRowColumn>1:21:21</TableRowColumn>
-                    <TableRowColumn>/bin/placeholder2</TableRowColumn>
-                </TableRow>
-                 <TableRow>
-                    <TableRowColumn>100</TableRowColumn>
-                    <TableRowColumn>root</TableRowColumn>
-                    <TableRowColumn>2</TableRowColumn>
-                    <TableRowColumn>3</TableRowColumn>
-                    <TableRowColumn>0:11:11</TableRowColumn>
-                    <TableRowColumn>/bin/placeholder3</TableRowColumn>
-                </TableRow>
+                {processStatusBody}
             </TableBody>
         )
     }
