@@ -7,6 +7,7 @@ import Login from './components/login'
 import ServerStatus from './components/server_status'
 import ServerStatusIndex from './components/server_status_index'
 import ServerStatusDetail from './components/server_status_detail'
+import SSHPermission from './components/ssh_permission'
 
 
 injectTapEventPlugin()
@@ -20,6 +21,7 @@ render((
             <IndexRoute component={ServerStatusIndex} />
             <Route path=":id" component={ServerStatusDetail} />
         </Route>
+        <Route path="ssh_permission" component={SSHPermission} />
     </Route>
   </Router>
 ), document.getElementById('app'))

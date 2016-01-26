@@ -86,7 +86,7 @@ class ServerStatusIndex extends React.Component {
                 }
                 let detailBtnDict = {
                     "Active": <TableRowColumn><Link to={linkToDetail}><RaisedButton label="Detail" secondary={true} /></Link></TableRowColumn>,
-                    "Down":  <TableRowColumn><RaisedButton label="Disable" disabled={true} /></TableRowColumn>,
+                    "Down":  <TableRowColumn><RaisedButton label="Detail" disabled={true} /></TableRowColumn>,
                 }
 
                 tableBody.push(
