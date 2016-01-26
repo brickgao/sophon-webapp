@@ -26,6 +26,8 @@ class SSHPermission extends React.Component {
             isMount: false,
         }
         this._getSSHPermissionStatus = this._getSSHPermissionStatus.bind(this)
+        this._updateSSHPermissionStatus = this._updateSSHPermissionStatus.bind(this)
+        this._requestPermission = this._requestPermission.bind(this)
     }
 
     render() {
@@ -66,7 +68,7 @@ class SSHPermission extends React.Component {
         )
     }
 
-   _getTableBody() {
+    _getTableBody() {
        if (!this.state.isMount) {
             $.get(
                 "/api/host/ssh_permission",
@@ -83,7 +85,7 @@ class SSHPermission extends React.Component {
                     false: <TableRowColumn><FontIcon className="material-icons" color={Colors.red400}>clear</FontIcon></TableRowColumn>,
                 }
                 let operationBtnDict = {
-                    false: <TableRowColumn><RaisedButton label="Request Permssion" secondary={true} /></TableRowColumn>,
+                    false: <TableRowColumn><RaisedButton label="Request Permssion" secondary={true} onTouchTap={this._requestPermission(key, this)} /></TableRowColumn>,
                     true:  <TableRowColumn><RaisedButton label="Request Permssion" disabled={true} /></TableRowColumn>,
                 }
 
@@ -105,6 +107,29 @@ class SSHPermission extends React.Component {
                 {tableBody}
             </TableBody>
         )
+    }
+
+    _updateSSHPermissionStatus(host_id) {
+        let modifiedStatus = this.state.SSHPermissionStatus
+        modifiedStatus[host_id]["Has Permission"] = true
+        this.setState({SSHPermissionStatus: modifiedStatus})
+    }
+
+    _requestPermission(host_id, obj) {
+        return function() {
+            $.ajax({
+                url: "/api/host/ssh_permission",
+                data: {
+                    host_id: host_id,
+                    has_permission: "true",
+                },
+                type: "PATCH",
+                dataType: "text",
+                success: function(data) {
+                    obj._updateSSHPermissionStatus(host_id)
+                },
+            })
+        }
     }
 }
 
