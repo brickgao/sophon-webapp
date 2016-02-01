@@ -8,6 +8,7 @@ import ServerStatus from './components/server_status'
 import ServerStatusIndex from './components/server_status_index'
 import ServerStatusDetail from './components/server_status_detail'
 import SSHPermission from './components/ssh_permission'
+import DockersStatus from './components/dockers_status'
 
 
 injectTapEventPlugin()
@@ -22,6 +23,7 @@ render((
             <Route path=":id" component={ServerStatusDetail} />
         </Route>
         <Route path="ssh_permission" component={SSHPermission} />
+        <Route path="dockers_status" component={DockersStatus} />
     </Route>
   </Router>
 ), document.getElementById('app'))
