@@ -9,6 +9,8 @@ import ServerStatusIndex from './components/server_status_index'
 import ServerStatusDetail from './components/server_status_detail'
 import SSHPermission from './components/ssh_permission'
 import DockersStatus from './components/dockers_status'
+import Deploy from './components/deploy'
+import DeployIndex from './components/deploy_index'
 
 
 injectTapEventPlugin()
@@ -21,6 +23,9 @@ render((
         <Route path="server" component={ServerStatus}>
             <IndexRoute component={ServerStatusIndex} />
             <Route path=":id" component={ServerStatusDetail} />
+        </Route>
+        <Route path="deploy" component={Deploy}>
+            <IndexRoute component={DeployIndex} />
         </Route>
         <Route path="ssh_permission" component={SSHPermission} />
         <Route path="dockers_status" component={DockersStatus} />

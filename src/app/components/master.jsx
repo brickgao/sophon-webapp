@@ -52,6 +52,7 @@ class Master extends React.Component {
             "//": "",
             "/server/": " - Server Status",
             "/ssh_permission/": " - SSH Permission",
+            "/deploy/": " - Deploy",
             "/dockers_status/": " - Docker Status",
         }
         let titleArray = this.props.location.pathname.split('/')
@@ -93,7 +94,7 @@ class Master extends React.Component {
                     <Divider inset={false} />
                     <ListItem href="/#/server" value="server" primaryText="Server" onTouchTap={this.handleLeftNavClose}/>
                     <ListItem href="/#/ssh_permission" value="ssh-permission" primaryText="SSH Permission" onTouchTap={this.handleLeftNavClose}/>
-                    <ListItem value="deploy" primaryText="Deploy" onTouchTap={this.handleLeftNavClose}/>
+                    <ListItem href="/#/deploy" value="deploy" primaryText="Deploy" onTouchTap={this.handleLeftNavClose}/>
                     <ListItem href="/#/dockers_status" value="docker" primaryText="Docker Status" onTouchTap={this.handleLeftNavClose}/>
                 </List>
             </LeftNav>
