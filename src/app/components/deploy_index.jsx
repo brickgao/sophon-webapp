@@ -17,17 +17,16 @@ import {
 const { Colors } = Styles
 
 
-class ServerStatusIndex extends React.Component {
+class DeployIndex extends React.Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            serverStatus: "",
+            deploySummary: "",
             isMount: false,
         }
-        this._getServerStatus = this._getServerStatus.bind(this)
+        this._getDeploySummary = this._getDeploySummary.bind(this)
     }
-
 
     render() {
         return(
@@ -48,12 +47,9 @@ class ServerStatusIndex extends React.Component {
              displaySelectAll={false}>
                 <TableRow>
                     <TableHeaderColumn>#</TableHeaderColumn>
+                    <TableHeaderColumn>Task Name</TableHeaderColumn>
                     <TableHeaderColumn>Status</TableHeaderColumn>
-                    <TableHeaderColumn>Hostname</TableHeaderColumn>
-                    <TableHeaderColumn>IP Address</TableHeaderColumn>
-                    <TableHeaderColumn>CPU Loads</TableHeaderColumn>
-                    <TableHeaderColumn>Memory Usage</TableHeaderColumn>
-                    <TableHeaderColumn>Disk Usage</TableHeaderColumn>
+                    <TableHeaderColumn>Created</TableHeaderColumn>
                     <TableHeaderColumn></TableHeaderColumn>
                 </TableRow>
             </TableHeader>
@@ -69,35 +65,34 @@ class ServerStatusIndex extends React.Component {
     _getTableBody() {
         if (!this.state.isMount) {
             $.get(
-                "/api/host/status",
-                this._getServerStatus
+                "/api/deploy",
+                this._getDeploySummary
             )
         }
 
         let tableBody = []
 
         if (this.state.isMount) {
-            for (let key of Object.keys(this.state.serverStatus)) {
-                let val = this.state.serverStatus[key]
-                let linkToDetail = "/server/" + key.toString()
+            for (let key of Object.keys(this.state.deploySummary)) {
+                let val = this.state.deploySummary[key]
+                let linkToDetail = "/deploy/" + key.toString()
                 let statusIconDict = {
-                    "Active": <TableRowColumn><FontIcon className="material-icons" color={Colors.greenA400}>done</FontIcon></TableRowColumn>,
-                    "Down": <TableRowColumn><FontIcon className="material-icons" color={Colors.red400}>error</FontIcon></TableRowColumn>,
+                    0: <TableRowColumn><FontIcon className="material-icons" color={Colors.grey400}>cached</FontIcon></TableRowColumn>,
+                    1: <TableRowColumn><FontIcon className="material-icons" color={Colors.greenA400}>done</FontIcon></TableRowColumn>,
+                    2: <TableRowColumn><FontIcon className="material-icons" color={Colors.red400}>error</FontIcon></TableRowColumn>,
                 }
                 let detailBtnDict = {
-                    "Active": <TableRowColumn><Link to={linkToDetail}><RaisedButton label="Detail" secondary={true} /></Link></TableRowColumn>,
-                    "Down":  <TableRowColumn><RaisedButton label="Detail" disabled={true} /></TableRowColumn>,
+                    0: <TableRowColumn><RaisedButton label="Detail" disabled={true} /></TableRowColumn>,
+                    1: <TableRowColumn><Link to={linkToDetail}><RaisedButton label="Detail" secondary={true} /></Link></TableRowColumn>,
+                    2: <TableRowColumn><Link to={linkToDetail}><RaisedButton label="Detail" secondary={true} /></Link></TableRowColumn>,
                 }
 
                 tableBody.push(
                     <TableRow key={key}>
                         <TableRowColumn>{key}</TableRowColumn>
+                        <TableRowColumn>{val["Taskname"]}</TableRowColumn>
                         {statusIconDict[val["Status"]]}
-                        <TableRowColumn>{val["Hostname"]}</TableRowColumn>
-                        <TableRowColumn>{val["IP"]}</TableRowColumn>
-                        <TableRowColumn>{val["CPU Load"]}</TableRowColumn>
-                        <TableRowColumn>{val["Memory Usage"][0]} / {val["Memory Usage"][1]} MB</TableRowColumn>
-                        <TableRowColumn>{val["Disk Usage"][0]} / {val["Disk Usage"][1]} GB</TableRowColumn>
+                        <TableRowColumn>{val["Created"]}</TableRowColumn>
                         {detailBtnDict[val["Status"]]}
                     </TableRow>
                 )
@@ -112,10 +107,10 @@ class ServerStatusIndex extends React.Component {
         )
     }
 
-    _getServerStatus(data) {
-        this.setState({serverStatus: data, isMount: true})
+    _getDeploySummary(data) {
+        this.setState({deploySummary: data, isMount: true})
     }
 
 }
 
-export default ServerStatusIndex
+export default DeployIndex
