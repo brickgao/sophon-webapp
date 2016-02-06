@@ -66,8 +66,8 @@ class DeployDetail extends React.Component {
 
         let status2str = {
             0: "Pending",
-            1: "Failed",
-            2: "Success",
+            1: "Success",
+            2: "Failed",
         }
         let hosts = []
 
