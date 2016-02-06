@@ -11,6 +11,7 @@ import SSHPermission from './components/ssh_permission'
 import DockersStatus from './components/dockers_status'
 import Deploy from './components/deploy'
 import DeployIndex from './components/deploy_index'
+import DeployDetail from './components/deploy_detail'
 
 
 injectTapEventPlugin()
@@ -26,6 +27,7 @@ render((
         </Route>
         <Route path="deploy" component={Deploy}>
             <IndexRoute component={DeployIndex} />
+            <Route path=":id" component={DeployDetail} />
         </Route>
         <Route path="ssh_permission" component={SSHPermission} />
         <Route path="dockers_status" component={DockersStatus} />
