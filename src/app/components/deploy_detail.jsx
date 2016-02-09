@@ -77,11 +77,12 @@ class DeployDetail extends React.Component {
                 let val = this.state.serverStatus[host_id]
                 let host = val["Hostname"] + "(" + val["IP"] + ")"
                 hosts.push(
-                    <div>
-                    <span key={i}>{host}</span>
+                    <div key={i}>
+                        <span>{host}</span>
                     </div>
                 )
             }
+            console.log(this.state.deployDetail["Msg"])
         }
         
         return (
@@ -93,7 +94,9 @@ class DeployDetail extends React.Component {
                 <p>{"Hosts: "}</p>
                 {hosts}
                 <p>{"Msg: "}</p>
-                {this.state.deployDetail["Msg"]}
+                <pre>
+                    {this.state.deployDetail["Msg"]}
+                </pre>
             </div>
         )
     }
