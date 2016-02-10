@@ -2,7 +2,9 @@ import React from 'react'
 import { render } from 'react-dom'
 import { Router, Route, Link } from 'react-router'
 import {
+    FlatButton,
     FontIcon,
+    Dialog,
     Styles,
     Table,
     TableBody,
@@ -22,6 +24,7 @@ class ServerStatusIndex extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            dialogOpen: false,
             serverStatus: "",
             isMount: false,
         }
@@ -31,13 +34,55 @@ class ServerStatusIndex extends React.Component {
 
     render() {
         return(
-            <Table
-             selectable={false}
-             height='80%'>
-                {this._getTableHeader()}
-                {this._getTableBody()}
-                {this._getTableFooter()}
-            </Table>
+            <div>
+                {this._getNewServerDialog()}
+                <Table
+                 selectable={false}
+                 height='80%'>
+                    {this._getTableHeader()}
+                    {this._getTableBody()}
+                    {this._getTableFooter()}
+                </Table>
+            </div>
+        )
+    }
+
+    _handleDialogOpen = () => {
+        this.setState({dialogOpen: true})
+    }
+  
+    _handleDialogClose = () => {
+        this.setState({dialogOpen: false})
+    }
+
+    _getNewServerDialog() {
+        const actions = [
+            <FlatButton
+             label="Cancel"
+             secondary={true}
+             onTouchTap={this._handleDialogClose}
+            />,
+            <FlatButton
+             label="Submit"
+             primary={true}
+             keyboardFocused={true}
+             onTouchTap={this._handleDialogClose}
+            />,
+        ];
+
+        return (
+            <div>
+                <RaisedButton label="NewServer" secondary={true} onTouchTap={this._handleDialogOpen} />
+                <Dialog
+                 title="New Server"
+                 actions={actions}
+                 modal={false}
+                 open={this.state.dialogOpen}
+                 onRequestClose={this._handleDialogClose}
+                >
+                    // fill in the blank here
+                </Dialog>
+            </div>
         )
     }
 
