@@ -90,19 +90,21 @@ class ServerStatusIndex extends React.Component {
     _getDialogBody() {
         return (
             <div>
+                <span>Hostname</span><br/>
+                <TextField
+                 hintText="Hostname"
+                /><br/>
+                <span>IP Address</span><br/>
                 <TextField
                  hintText="IP Address"
-                 floatingLabelText="IP Address"
                 /><br/>
-                <TextField
-                 hintText="IP Address"
-                 floatingLabelText="IP Address"
-                /><br/>
+                <span>SSH Secret key</span><br/>
                 <TextField
                  hintText="SSH Secret Key"
-                 floatingLabelText="SSH Secret Key"
+                 fullWidth={true}
                  multiLine={true}
-                 rows={4}
+                 rows={3}
+                 rowsMax={3}
                 /><br />          
             </div>
         )
