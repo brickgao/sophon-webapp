@@ -13,6 +13,7 @@ import {
     TableHeaderColumn,
     TableRow,
     TableRowColumn,
+    TextField,
     RaisedButton,
 } from 'material-ui'
 
@@ -80,21 +81,29 @@ class ServerStatusIndex extends React.Component {
                  open={this.state.dialogOpen}
                  onRequestClose={this._handleDialogClose}
                 >
-                <TextField
- +                 hintText="Hostname"
- +                 floatingLabelText="Hostname"
- +                /><br/>
- +                <TextField
- +                 hintText="IP Address"
- +                 floatingLabelText="IP Address"
- +                /><br/>
- +                <TextField
- +                 hintText="SSH Secret Key"
- +                 floatingLabelText="SSH Secret Key"
- +                 multiLine={true}
- +                 rows={5}
- +                />
+                    {this._getDialogBody()}
                 </Dialog>
+            </div>
+        )
+    }
+    
+    _getDialogBody() {
+        return (
+            <div>
+                <TextField
+                 hintText="IP Address"
+                 floatingLabelText="IP Address"
+                /><br/>
+                <TextField
+                 hintText="IP Address"
+                 floatingLabelText="IP Address"
+                /><br/>
+                <TextField
+                 hintText="SSH Secret Key"
+                 floatingLabelText="SSH Secret Key"
+                 multiLine={true}
+                 rows={4}
+                /><br />          
             </div>
         )
     }
