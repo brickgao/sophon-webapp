@@ -26,7 +26,7 @@ class ServerStatusIndex extends React.Component {
         super(props)
         this.state = {
             dialogOpen: false,
-            serverStatus: "",
+            serverStatus: [],
             isMount: false,
             hostnameErrorText: "",
             IPAddressErrorText: "",
@@ -83,6 +83,7 @@ class ServerStatusIndex extends React.Component {
                         ip: ip,
                         ssh_secret_key: ssh_secret_key,
                     },
+                    this._updateServerStatus
                 )
                 this._handleDialogClose()
             }
@@ -197,49 +198,63 @@ class ServerStatusIndex extends React.Component {
             )
         }
 
-        let tableBody = []
-
-        if (this.state.isMount) {
-            for (let key of Object.keys(this.state.serverStatus)) {
-                let val = this.state.serverStatus[key]
-                let linkToDetail = "/server/" + key.toString()
-                let statusIconDict = {
-                    "Active": <TableRowColumn><FontIcon className="material-icons" color={Colors.greenA400}>done</FontIcon></TableRowColumn>,
-                    "Down": <TableRowColumn><FontIcon className="material-icons" color={Colors.red400}>error</FontIcon></TableRowColumn>,
-                }
-                let detailBtnDict = {
-                    "Active": <TableRowColumn><Link to={linkToDetail}><RaisedButton label="Detail" secondary={true} /></Link></TableRowColumn>,
-                    "Down":  <TableRowColumn><RaisedButton label="Detail" disabled={true} /></TableRowColumn>,
-                }
-
-                tableBody.push(
-                    <TableRow key={key}>
-                        <TableRowColumn>{key}</TableRowColumn>
-                        {statusIconDict[val["Status"]]}
-                        <TableRowColumn>{val["Hostname"]}</TableRowColumn>
-                        <TableRowColumn>{val["IP"]}</TableRowColumn>
-                        <TableRowColumn>{val["CPU Load"]}</TableRowColumn>
-                        <TableRowColumn>{val["Memory Usage"][0]} / {val["Memory Usage"][1]} MB</TableRowColumn>
-                        <TableRowColumn>{val["Disk Usage"][0]} / {val["Disk Usage"][1]} GB</TableRowColumn>
-                        {detailBtnDict[val["Status"]]}
-                    </TableRow>
-                )
-            }
-        }
-
         return (
             <TableBody
              displayRowCheckbox={false}>
-                {tableBody}
+                {this.state.serverStatus}
             </TableBody>
         )
     }
 
     _getServerStatus(data) {
-        this.setState({serverStatus: data, isMount: true})
+        let tableBody = []
+
+        for (let key of Object.keys(data)) {
+            let val = data[key]
+            tableBody.push(
+                this._getSingleTableRow(key, val)
+            )
+        }
+ 
+        this.setState({serverStatus: tableBody, isMount: true})
+    }
+
+    _getSingleTableRow(key, val) {
+        let linkToDetail = "/server/" + key.toString()
+        let statusIconDict = {
+            "Active": <TableRowColumn><FontIcon className="material-icons" color={Colors.greenA400}>done</FontIcon></TableRowColumn>,
+            "Down": <TableRowColumn><FontIcon className="material-icons" color={Colors.red400}>error</FontIcon></TableRowColumn>,
+        }
+        let detailBtnDict = {
+            "Active": <TableRowColumn><Link to={linkToDetail}><RaisedButton label="Detail" secondary={true} /></Link></TableRowColumn>,
+            "Down":  <TableRowColumn><RaisedButton label="Detail" disabled={true} /></TableRowColumn>,
+        }
+
+        return (
+            <TableRow key={key}>
+                <TableRowColumn>{key}</TableRowColumn>
+                {statusIconDict[val["Status"]]}
+                <TableRowColumn>{val["Hostname"]}</TableRowColumn>
+                <TableRowColumn>{val["IP"]}</TableRowColumn>
+                <TableRowColumn>{val["CPU Load"]}</TableRowColumn>
+                <TableRowColumn>{val["Memory Usage"][0]} / {val["Memory Usage"][1]} MB</TableRowColumn>
+                <TableRowColumn>{val["Disk Usage"][0]} / {val["Disk Usage"][1]} GB</TableRowColumn>
+                {detailBtnDict[val["Status"]]}
+            </TableRow>
+        )
     }
 
     _updateServerStatus(data) {
+        let tableBody = this.state.serverStatus
+
+        for (let key of Object.keys(data)) {
+            let val = data[key]
+            tableBody.push(
+                this._getSingleTableRow(key, val)
+            )
+        }
+
+        this.setState({serverStatus: tableBody})
     }
 
 }
