@@ -28,8 +28,13 @@ class ServerStatusIndex extends React.Component {
             dialogOpen: false,
             serverStatus: "",
             isMount: false,
+            hostnameErrorText: "",
+            IPAddressErrorText: "",
+            SSHSecretKeyErrorText: "",
         }
         this._getServerStatus = this._getServerStatus.bind(this)
+        this._handleNewServer = this._handleNewServer.bind(this)
+        this._updateServerStatus = this._updateServerStatus.bind(this)
     }
 
 
@@ -48,12 +53,55 @@ class ServerStatusIndex extends React.Component {
         )
     }
 
+    _handleNewServer() {
+        let hostname = $("#hostname").val()
+        let ip = $("#ip").val()
+        let ssh_secret_key = $("#ssh_secret_key").val()
+
+        try {
+            this.setState({
+                hostnameErrorText: "",
+                IPAddressErrorText: "",
+                SSHSecretKeyErrorText: "",
+            })
+        }
+        finally {
+            if (hostname === "") {
+                this.setState({hostname: "Please input host name"})
+            }
+            else if (ip === "") {
+                this.setState({IPAddressErrorText: "Please input IP address"})
+            }
+            else if (ssh_secret_key === "") {
+                this.setState({SSHSecretKeyErrorText: "Please input SSH secret key"})
+            }
+            else {
+                $.post(
+                    "/api/host",
+                    {
+                        hostname: hostname,
+                        ip: ip,
+                        ssh_secret_key: ssh_secret_key,
+                    },
+                )
+                this._handleDialogClose()
+            }
+        }
+    }
+
+
+
     _handleDialogOpen = () => {
         this.setState({dialogOpen: true})
     }
   
     _handleDialogClose = () => {
-        this.setState({dialogOpen: false})
+        this.setState({
+            dialogOpen: false,
+            hostnameErrorText: "",
+            IPAddressErrorText: "",
+            SSHSecretKeyErrorText: "",
+        })
     }
 
     _getNewServerDialog() {
@@ -67,7 +115,7 @@ class ServerStatusIndex extends React.Component {
              label="Submit"
              primary={true}
              keyboardFocused={true}
-             onTouchTap={this._handleDialogClose}
+             onTouchTap={this._handleNewServer}
             />,
         ];
 
@@ -92,17 +140,23 @@ class ServerStatusIndex extends React.Component {
             <div>
                 <span>Hostname</span><br/>
                 <TextField
+                 id="hostname"
                  hintText="Hostname"
+                 errorText={this.state.hostnameErrorText}
                 /><br/>
                 <span>IP Address</span><br/>
                 <TextField
+                 id="ip"
                  hintText="IP Address"
+                 errorText={this.state.IPAddressErrorText}
                 /><br/>
                 <span>SSH Secret key</span><br/>
                 <TextField
+                 id="ssh_secret_key"
                  hintText="SSH Secret Key"
                  fullWidth={true}
                  multiLine={true}
+                 errorText={this.state.SSHSecretKeyErrorText}
                  rows={3}
                  rowsMax={3}
                 /><br />          
@@ -183,6 +237,9 @@ class ServerStatusIndex extends React.Component {
 
     _getServerStatus(data) {
         this.setState({serverStatus: data, isMount: true})
+    }
+
+    _updateServerStatus(data) {
     }
 
 }
