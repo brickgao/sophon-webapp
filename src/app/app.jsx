@@ -3,6 +3,7 @@ import { render } from 'react-dom'
 import { browserHistory, IndexRoute, Router, Route, Link } from 'react-router'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import Master from './components/master'
+import Index from './components/index'
 import Login from './components/login'
 import ServerStatus from './components/server_status'
 import ServerStatusIndex from './components/server_status_index'
@@ -34,6 +35,7 @@ function requireAuth(nextState, replaceState) {
 render((
   <Router history={browserHistory}>
     <Route path="/" component={Master}>
+        <IndexRoute component={Index} onEnter={requireAuth}/>
         <Route path="login" component={Login} />
         <Route path="server" component={ServerStatus} onEnter={requireAuth}>
             <IndexRoute component={ServerStatusIndex} />
