@@ -169,8 +169,8 @@ class ServerStatusDetail extends React.Component {
                     <TableRow key={singleProcessStatus["PID"]}>
                         <TableRowColumn>{singleProcessStatus["PID"]}</TableRowColumn>
                         <TableRowColumn>{singleProcessStatus["User"]}</TableRowColumn>
-                        <TableRowColumn>{singleProcessStatus["Memory Usage"] * 100}</TableRowColumn>
-                        <TableRowColumn>{singleProcessStatus["CPU Usage"] * 100}</TableRowColumn>
+                        <TableRowColumn>{singleProcessStatus["Memory Usage"]}</TableRowColumn>
+                        <TableRowColumn>{singleProcessStatus["CPU Usage"]}</TableRowColumn>
                         <TableRowColumn>{singleProcessStatus["Time"]}</TableRowColumn>
                         <TableRowColumn>{singleProcessStatus["Command"]}</TableRowColumn>
                     </TableRow>
