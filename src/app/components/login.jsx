@@ -53,7 +53,7 @@ class Login extends React.Component {
 
     _handleData(data) {
         if (data["id"] != null) {
-            window.location = "/#/"
+            this.props.history.replace('/')
         }
         else {
             this.setState({passwordErrorText: "Wrong username or password"})
@@ -155,4 +155,3 @@ class Login extends React.Component {
 }
 
 export default Login
-
