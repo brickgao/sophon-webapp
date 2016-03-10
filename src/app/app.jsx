@@ -13,6 +13,7 @@ import DockersStatus from './components/dockers_status'
 import Deploy from './components/deploy'
 import DeployIndex from './components/deploy_index'
 import DeployDetail from './components/deploy_detail'
+import RegisterUser from './components/register_user'
 
 
 injectTapEventPlugin()
@@ -26,6 +27,22 @@ function requireAuth(nextState, replaceState) {
         success: function (data) {
             if (!data.hasOwnProperty("id")) {
                 replaceState({}, "/login")
+            }
+        },
+    })
+}
+
+function requireAdminAuth(nextState, replaceState) {
+    $.ajax({
+        type: "GET",
+        url: "/api/user/info",
+        async: false,
+        success: function (data) {
+            if (!data.hasOwnProperty("id")) {
+                replaceState({}, "/login")
+            }
+            else if (data["type"] !== 1) {
+                replaceState({}, "/")
             }
         },
     })
@@ -47,6 +64,7 @@ render((
         </Route>
         <Route path="ssh_permission" component={SSHPermission} onEnter={requireAuth}/>
         <Route path="dockers_status" component={DockersStatus} onEnter={requireAuth}/>
+        <Route path="register_user" component={RegisterUser} onEnter={requireAdminAuth}/>
     </Route>
   </Router>
 ), document.getElementById('app'))
