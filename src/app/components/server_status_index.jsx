@@ -28,10 +28,12 @@ class ServerStatusIndex extends React.Component {
             dialogOpen: false,
             serverStatus: [],
             isMount: false,
+            userInfo: "",
             hostnameErrorText: "",
             IPAddressErrorText: "",
             SSHSecretKeyErrorText: "",
         }
+        this._getUserInfo = this._getUserInfo.bind(this)
         this._getServerStatus = this._getServerStatus.bind(this)
         this._handleNewServer = this._handleNewServer.bind(this)
         this._updateServerStatus = this._updateServerStatus.bind(this)
@@ -91,7 +93,6 @@ class ServerStatusIndex extends React.Component {
     }
 
 
-
     _handleDialogOpen = () => {
         this.setState({dialogOpen: true})
     }
@@ -120,9 +121,15 @@ class ServerStatusIndex extends React.Component {
             />,
         ];
 
+        let newServerBtn = ""
+
+        if (this.state.isMount && this.state.userInfo["type"] === 1) {
+            newServerBtn = <RaisedButton label="NewServer" secondary={true} onTouchTap={this._handleDialogOpen} />
+        }
+
         return (
             <div>
-                <RaisedButton label="NewServer" secondary={true} onTouchTap={this._handleDialogOpen} />
+                {newServerBtn}
                 <Dialog
                  title="New Server"
                  actions={actions}
@@ -189,12 +196,20 @@ class ServerStatusIndex extends React.Component {
             <TableFooter></TableFooter>
         )
     }
+    
+    _getUserInfo(data) {
+        this.setState({userInfo: data})
+    }
 
     _getTableBody() {
         if (!this.state.isMount) {
             $.get(
                 "/api/host/status",
                 this._getServerStatus
+            )
+            $.get(
+                "/api/user/info",
+                this._getUserInfo,
             )
         }
 
