@@ -75,7 +75,6 @@ class RegisterUser extends React.Component {
                 this.setState({SSHPublicKeyErrorText: "Please input SSH public key"})
             }
             else {
-                console.log(username, password, ssh_public_key, user_type)
                 $.post(
                     "/api/user/reg",
                     {
