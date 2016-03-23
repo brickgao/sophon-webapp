@@ -67,7 +67,7 @@ class ServerStatusIndex extends React.Component {
         }
         finally {
             if (hostname === "") {
-                this.setState({hostname: "Please input host name"})
+                this.setState({hostnameErrorText: "Please input host name"})
             }
             else if (ip === "") {
                 this.setState({IPAddressErrorText: "Please input IP address"})
