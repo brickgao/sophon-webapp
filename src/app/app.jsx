@@ -14,6 +14,7 @@ import Deploy from './components/deploy'
 import DeployIndex from './components/deploy_index'
 import DeployDetail from './components/deploy_detail'
 import RegisterUser from './components/register_user'
+import ChangePassword from './components/change_password'
 
 
 injectTapEventPlugin()
@@ -62,9 +63,10 @@ render((
             <IndexRoute component={DeployIndex} />
             <Route path=":id" component={DeployDetail} />
         </Route>
-        <Route path="ssh_permission" component={SSHPermission} onEnter={requireAuth}/>
-        <Route path="dockers_status" component={DockersStatus} onEnter={requireAuth}/>
-        <Route path="register_user" component={RegisterUser} onEnter={requireAdminAuth}/>
+        <Route path="ssh_permission" component={SSHPermission} onEnter={requireAuth} />
+        <Route path="dockers_status" component={DockersStatus} onEnter={requireAuth} />
+        <Route path="register_user" component={RegisterUser} onEnter={requireAdminAuth} />
+        <Route path="change_password" component={ChangePassword} onEnter={requireAuth} />
     </Route>
   </Router>
 ), document.getElementById('app'))
