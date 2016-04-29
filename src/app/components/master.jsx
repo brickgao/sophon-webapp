@@ -73,7 +73,8 @@ class Master extends React.Component {
             "/ssh_permission/": " - SSH Permission",
             "/deploy/": " - Deploy",
             "/dockers_status/": " - Docker Status",
-            "/register_user/": "- Register User",
+            "/register_user/": " - Register User",
+            "/change_password/": " - Change Password",
         }
         let titleArray = this.props.location.pathname.split('/')
         let titleCut = [titleArray[0], titleArray[1], ""].join('/')
