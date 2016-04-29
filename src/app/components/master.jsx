@@ -8,9 +8,14 @@ import {
     Divider,
     FlatButton,
     LeftNav,
+    IconButton,
+    IconMenu,
+    MenuItem,
     List,
     ListItem,
 } from 'material-ui'
+import MoreVertIcon from 'material-ui/lib/svg-icons/navigation/more-vert'
+
 
 
 class Master extends React.Component {
@@ -26,7 +31,7 @@ class Master extends React.Component {
         this.state = {
             isMount: false,
             leftNavOpen: false,
-            userInfo: "",
+            userInfo: {username: ""},
         }
         this._logout = this._logout.bind(this)
         this._getUserInfo = this._getUserInfo.bind(this)
@@ -94,9 +99,19 @@ class Master extends React.Component {
     }
 
     _getUserStatus() {
+
+        let currentUserText = "Current User: " + this.state.userInfo.username
+        
         return (
-            <FlatButton label="Logout" 
-             onTouchTap={this._logout} />
+            <IconMenu
+             iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+             anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+             targetOrigin={{horizontal: 'right', vertical: 'bottom'}}
+            >
+                <MenuItem value="0" primaryText={currentUserText} />
+                <MenuItem value="1" primaryText="Change Password" href="/#/change_password" />
+                <MenuItem value="2" primaryText="Logout" onTouchTap={this._logout} />
+            </IconMenu>
         )
     }
 
