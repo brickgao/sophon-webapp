@@ -105,6 +105,7 @@ class Login extends React.Component {
             <div style={styles}>
                 {this._getFormHeader()}
                 {this._getFormTextField()}
+                {this._getPoweredby()}
                 {this._getFormBtn()}
             </div>
         )
@@ -138,6 +139,21 @@ class Login extends React.Component {
                  type="password"
                  hintText="Input your Password" />
             </div>
+        )
+    }
+
+    
+    _getPoweredby() {
+        let styles = {
+            position: 'absolute',
+            left: '35px',
+            bottom: '15px',
+            fontSize: '3px',
+            color: '#909090',
+        }
+
+        return (
+            <span style={styles}>Powered by <a href="https://github.com/TheSophon/sophon">Sophon</a></span>
         )
     }
 
