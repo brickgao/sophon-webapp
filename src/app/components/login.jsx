@@ -148,7 +148,7 @@ class Login extends React.Component {
             position: 'absolute',
             left: '35px',
             bottom: '15px',
-            fontSize: '3px',
+            fontSize: '50%',
             color: '#909090',
         }
 
