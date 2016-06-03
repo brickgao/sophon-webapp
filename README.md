@@ -12,7 +12,7 @@ You could use the project [ansible-role-sophon](https://github.com/TheSophon/ans
 
 Or you could install stand-alone Sophon-WebApp by following steps:
 
-1. Install Node.js by following offical guide.
+1. Install Node.js by following official guide.
 
 2. Clone the whole project, and use `npm install` to install dependencies.
 
